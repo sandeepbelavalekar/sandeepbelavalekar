@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>Spring Security JWT example</name>
-    <description>An example API with JWT authentication and authorization</description>
+    <description>An example of API with JWT authentication and authorization</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
