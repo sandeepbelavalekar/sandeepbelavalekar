@@ -7,7 +7,7 @@
 	<packaging>jar</packaging>
 
 	<name>spring-config-server</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Demo project of Spring Boot Config Service</description>
 
 	<parent>
 		<groupId>com.howtodoinjava</groupId>
