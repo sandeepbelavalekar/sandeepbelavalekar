@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 
-public class Customer {
+public class CustomerDTO {
 	private long id;
 
 	@NotBlank(message = "Name cannot be empty")
@@ -28,15 +28,15 @@ public class Customer {
 	
 	private Date registrationDate;
 	
-	private List<Purchase> purchaseList;
+	private List<PurchaseDTO> purchaseList;
 
-	public Customer(String name, String phoneNumber) {
+	public CustomerDTO(String name, String phoneNumber) {
 		this.name = name;
 		this.phoneNumber = phoneNumber;
 		this.pointsBalance = 0;
 	}
 	
-	public Customer() {
+	public CustomerDTO() {
 		
 	}
 
@@ -104,11 +104,11 @@ public class Customer {
 		this.registrationDate = registrationDate;
 	}
 
-	public List<Purchase> getPurchaseList() {
+	public List<PurchaseDTO> getPurchaseList() {
 		return purchaseList;
 	}
 
-	public void setPurchaseList(List<Purchase> purchaseList) {
+	public void setPurchaseList(List<PurchaseDTO> purchaseList) {
 		this.purchaseList = purchaseList;
 	}
 

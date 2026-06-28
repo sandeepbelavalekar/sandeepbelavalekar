@@ -15,22 +15,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.retail.demo.dto.Customer;
-import com.retail.demo.dto.Purchase;
+import com.retail.demo.dto.CustomerDTO;
+import com.retail.demo.dto.PurchaseDTO;
 import com.retail.demo.dto.ResponseData;
 import com.retail.demo.service.RewardsService;
 
 import jakarta.validation.Valid;
 
 @RestController
-
 public class RewardsController {
 
 	@Autowired
 	RewardsService service;
 
+	
 	@PostMapping("/registerCustomer")
-	public ResponseEntity<String> registerCustomer(@Valid @RequestBody Customer customer) {
+	public ResponseEntity<String> registerCustomer(@Valid @RequestBody CustomerDTO customer) {
 		ResponseEntity<String> responseEntity = null;
 		ResponseData responseData = service.registerCustomer(customer);
 		if (responseData.isStatus()) {
@@ -42,7 +42,7 @@ public class RewardsController {
 	}
 
 	@PostMapping("/purchaseItems")
-	public ResponseEntity<String> purchaseItems(@Valid @RequestBody Purchase p) {
+	public ResponseEntity<String> purchaseItems(@Valid @RequestBody PurchaseDTO p) {
 		ResponseData responseData = service.purchaseItem(p);
 		ResponseEntity<String> responseEntity = null;
 

@@ -1,6 +1,6 @@
 package com.retail.demo.dto;
 
-public class Item {
+public class ItemDTO {
 	
 	private String name;
 	
