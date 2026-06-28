@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.time.Month;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -19,8 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.retail.demo.dao.CustomerRepository;
 import com.retail.demo.dao.PurchaseRepository;
-import com.retail.demo.dto.Customer;
-import com.retail.demo.dto.Purchase;
+import com.retail.demo.dto.CustomerDTO;
+import com.retail.demo.dto.PurchaseDTO;
 import com.retail.demo.dto.ResponseData;
 import com.retail.demo.dto.entity.CustomerEntity;
 import com.retail.demo.dto.entity.ItemEntity;
@@ -39,7 +38,13 @@ public class RewardsService {
 	@Autowired
 	PurchaseRepository purchaseRepo;	 
 	
-	public ResponseData registerCustomer(Customer customer) {
+	
+	/**
+	 * This method is used to register a new customer.
+	 * @param customer
+	 * @return
+	 */
+	public ResponseData registerCustomer(CustomerDTO customer) {
 		ResponseData responseData = null;
 		CustomerEntity entity = null;		
 		entity = repo.findByPhoneNumber(customer.getPhoneNumber());
@@ -60,21 +65,27 @@ public class RewardsService {
 		return responseData;
 	}
 
+	
+	/**
+	 * This method is used to perform purchase transaction and calculate reward points
+	 * @param purchase
+	 * @return ResponseData
+	 */
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public ResponseData purchaseItem(Purchase p) {
+	public ResponseData purchaseItem(PurchaseDTO purchase) {
 		ResponseData responseData = null;
-		CustomerEntity custEntity = repo.findByPhoneNumber(p.getPhoneNumber());
+		CustomerEntity custEntity = repo.findByPhoneNumber(purchase.getPhoneNumber());
 		if (custEntity != null) {
-			responseData = computeRewards(p, custEntity);
+			responseData = computeRewards(purchase, custEntity);
 			return responseData;
 		} else {
-			responseData = new ResponseData("Phone Number not found " + p.getPoints());
+			responseData = new ResponseData("Phone Number not found " + purchase.getPoints());
 			responseData.setStatus(false);
 		}
 		return responseData;
 	}
 
-	private ResponseData computeRewards(Purchase p, CustomerEntity custEntity) {
+	private ResponseData computeRewards(PurchaseDTO p, CustomerEntity custEntity) {
 		ResponseData responseData;
 		List<ItemEntity> l=  cacheService.getItems();
 		Map<Object, Double> map = l.stream().collect(Collectors.toMap(f->f.getName(), f->f.getPrice()));
@@ -109,16 +120,21 @@ public class RewardsService {
 		return responseData;
 	}
 
+	/**
+	 * This method is used to check the reward points
+	 * @param phoneNumber
+	 * @return ResponseData
+	 */
 	public ResponseData getBalance(String phoneNumber) {
 		
 		CustomerEntity custEntity =	repo.findByPhoneNumber(phoneNumber);
 		
 		List<PurchaseEntity> list = custEntity.getPurchaseList();
 		
-		Customer cust = new Customer();
+		CustomerDTO cust = new CustomerDTO();
 		BeanUtils.copyProperties(custEntity, cust);
 		cust.setPurchaseList(null);
-		List<Purchase> purchaseList = new ArrayList<>();
+		List<PurchaseDTO> purchaseList = new ArrayList<>();
 		Map<String, Integer> map = list.stream().collect(Collectors.toMap(f-> getMonth(f.getPurchaseDate()), v->v.getPoints(), (x,y)-> x+y));
 		map.put("Total", custEntity.getPointsBalance());
 		

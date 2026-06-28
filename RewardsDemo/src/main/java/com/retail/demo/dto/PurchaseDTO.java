@@ -9,14 +9,14 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 
-public class Purchase {
+public class PurchaseDTO {
 
 	@JsonIgnore
 	private int id;
 
 	@NotEmpty(message = "Item must be added")
 	@JsonInclude(JsonInclude.Include.NON_NULL)
-	private List<Item> itemList;
+	private List<ItemDTO> itemList;
 
 	private double totalPrice;
 	
@@ -38,11 +38,11 @@ public class Purchase {
 		this.id = id;
 	}
 
-	public List<Item> getItemList() {
+	public List<ItemDTO> getItemList() {
 		return itemList;
 	}
 
-	public void setItemList(List<Item> itemList) {
+	public void setItemList(List<ItemDTO> itemList) {
 		this.itemList = itemList;
 	}
 
