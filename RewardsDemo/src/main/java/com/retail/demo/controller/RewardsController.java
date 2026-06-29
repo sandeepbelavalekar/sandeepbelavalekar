@@ -23,11 +23,11 @@ import com.retail.demo.service.RewardsService;
 import jakarta.validation.Valid;
 
 @RestController
+
 public class RewardsController {
 
 	@Autowired
 	RewardsService service;
-
 	
 	@PostMapping("/registerCustomer")
 	public ResponseEntity<String> registerCustomer(@Valid @RequestBody CustomerDTO customer) {
