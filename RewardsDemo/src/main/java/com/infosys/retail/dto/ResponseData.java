@@ -1,4 +1,4 @@
-package com.retail.demo.dto;
+package com.infosys.retail.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

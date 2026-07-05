@@ -1,4 +1,4 @@
-package com.retail.demo.dto.entity;
+package com.infosys.retail.dto.entity;
 
 import java.util.Date;
 
@@ -28,7 +28,7 @@ public class PurchaseEntity {
 	private long customerId;
 	
 	@Column(name = "points")
-	private int points;
+	private double points;
 
 	public int getId() {
 		return id;
@@ -62,11 +62,11 @@ public class PurchaseEntity {
 		this.customerId = customerId;
 	}
 
-	public int getPoints() {
+	public double getPoints() {
 		return points;
 	}
 
-	public void setPoints(int points) {
+	public void setPoints(double points) {
 		this.points = points;
 	}
 

@@ -1,4 +1,4 @@
-package com.retail.demo;
+package com.infosys.retail;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,4 +1,4 @@
-package com.retail.demo;
+package com.infosys.retail;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

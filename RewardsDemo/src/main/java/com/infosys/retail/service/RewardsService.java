@@ -1,6 +1,7 @@
-package com.retail.demo.service;
+package com.infosys.retail.service;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.time.Month;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
@@ -16,14 +17,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.retail.demo.dao.CustomerRepository;
-import com.retail.demo.dao.PurchaseRepository;
-import com.retail.demo.dto.CustomerDTO;
-import com.retail.demo.dto.PurchaseDTO;
-import com.retail.demo.dto.ResponseData;
-import com.retail.demo.dto.entity.CustomerEntity;
-import com.retail.demo.dto.entity.ItemEntity;
-import com.retail.demo.dto.entity.PurchaseEntity;
+import com.infosys.retail.dao.CustomerRepository;
+import com.infosys.retail.dao.PurchaseRepository;
+import com.infosys.retail.dto.CustomerDTO;
+import com.infosys.retail.dto.PurchaseDTO;
+import com.infosys.retail.dto.ResponseData;
+import com.infosys.retail.dto.entity.CustomerEntity;
+import com.infosys.retail.dto.entity.ItemEntity;
+import com.infosys.retail.dto.entity.PurchaseEntity;
 
 
 @Service
@@ -36,7 +37,9 @@ public class RewardsService {
 	CacheService cacheService;
 	
 	@Autowired
-	PurchaseRepository purchaseRepo;	 
+	PurchaseRepository purchaseRepo;
+	
+	private SimpleDateFormat sdf = new SimpleDateFormat("MMM/yyyy");
 	
 	
 	/**
@@ -102,9 +105,9 @@ public class RewardsService {
 		purchaseEntity.setCustomerId(p.getCustomerId());		
 		purchaseEntity.setPurchaseDate(new Date());
 		purchaseEntity.setTotalPrice(p.getTotalPrice());		
-		int points = 0;
+		double points = 0;
 		if(p.getTotalPrice() > 100) {
-			points = new BigDecimal((p.getTotalPrice()-100) * 2).intValue();
+			points = new BigDecimal((p.getTotalPrice()-100) * 2).doubleValue();
 			points = points+50;			
 		}else if(p.getTotalPrice() <= 100 && p.getTotalPrice()> 50) {
 			points = 50;
@@ -136,7 +139,7 @@ public class RewardsService {
 			BeanUtils.copyProperties(custEntity, cust);
 			cust.setPurchaseList(null);
 			List<PurchaseDTO> purchaseList = new ArrayList<>();
-			Map<String, Integer> map = list.stream()
+			Map<String, Double> map = list.stream()
 					.collect(Collectors.toMap(f -> getMonth(f.getPurchaseDate()), v -> v.getPoints(), (x, y) -> x + y));
 			map.put("Total", custEntity.getPointsBalance());
 
@@ -150,7 +153,7 @@ public class RewardsService {
 		}
 	}
 
-	private String getMonth(Date purchaseDate) {
-		return Month.of(purchaseDate.getMonth()).getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+	private String getMonth(Date purchaseDate) {		
+		return sdf.format(purchaseDate);
 	}
 }

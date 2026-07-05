@@ -1,4 +1,4 @@
-package com.retail.demo.config;
+package com.infosys.retail.config;
 
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;

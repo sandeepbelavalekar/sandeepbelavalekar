@@ -1,4 +1,4 @@
-package com.retail.demo.dto.entity;
+package com.infosys.retail.dto.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

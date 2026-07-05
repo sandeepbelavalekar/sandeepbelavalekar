@@ -1,4 +1,4 @@
-package com.retail.demo.dto;
+package com.infosys.retail.dto;
 
 public class ItemDTO {
 	

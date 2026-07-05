@@ -1,4 +1,4 @@
-package com.retail.demo.controller;
+package com.infosys.retail.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.retail.demo.dto.CustomerDTO;
-import com.retail.demo.dto.PurchaseDTO;
-import com.retail.demo.dto.ResponseData;
-import com.retail.demo.service.RewardsService;
+import com.infosys.retail.dto.CustomerDTO;
+import com.infosys.retail.dto.PurchaseDTO;
+import com.infosys.retail.dto.ResponseData;
+import com.infosys.retail.service.RewardsService;
 
 import jakarta.validation.Valid;
 

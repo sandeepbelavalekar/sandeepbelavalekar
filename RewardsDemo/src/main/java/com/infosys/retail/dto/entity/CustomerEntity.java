@@ -1,4 +1,4 @@
-package com.retail.demo.dto.entity;
+package com.infosys.retail.dto.entity;
 
 import java.util.Date;
 import java.util.List;
@@ -29,7 +29,7 @@ public class CustomerEntity {
 	private String phoneNumber;
     
     @Column(name = "points_balance")
-	private int pointsBalance;
+	private double pointsBalance;
     
     @Column(name = "email")
     private String email;
@@ -69,11 +69,11 @@ public class CustomerEntity {
 		this.phoneNumber = phoneNumber;
 	}
 
-	public int getPointsBalance() {
+	public double getPointsBalance() {
 		return pointsBalance;
 	}
 
-	public void setPointsBalance(int pointsBalance) {
+	public void setPointsBalance(double pointsBalance) {
 		this.pointsBalance = pointsBalance;
 	}
 	

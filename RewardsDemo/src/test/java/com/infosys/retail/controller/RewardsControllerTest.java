@@ -1,4 +1,4 @@
-package com.retail.demo.controller;
+package com.infosys.retail.controller;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -12,11 +12,11 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.retail.demo.dao.CustomerRepository;
-import com.retail.demo.dto.CustomerDTO;
-import com.retail.demo.dto.ResponseData;
-import com.retail.demo.service.CacheService;
-import com.retail.demo.service.RewardsService;
+import com.infosys.retail.dao.CustomerRepository;
+import com.infosys.retail.dto.CustomerDTO;
+import com.infosys.retail.dto.ResponseData;
+import com.infosys.retail.service.CacheService;
+import com.infosys.retail.service.RewardsService;
 
 @org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest
 public class RewardsControllerTest {

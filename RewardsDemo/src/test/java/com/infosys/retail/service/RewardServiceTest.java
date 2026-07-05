@@ -1,4 +1,4 @@
-package com.retail.demo.service;
+package com.infosys.retail.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -16,15 +16,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.retail.demo.dao.CustomerRepository;
-import com.retail.demo.dao.PurchaseRepository;
-import com.retail.demo.dto.CustomerDTO;
-import com.retail.demo.dto.ItemDTO;
-import com.retail.demo.dto.PurchaseDTO;
-import com.retail.demo.dto.ResponseData;
-import com.retail.demo.dto.entity.CustomerEntity;
-import com.retail.demo.dto.entity.ItemEntity;
-import com.retail.demo.dto.entity.PurchaseEntity;
+import com.infosys.retail.dao.CustomerRepository;
+import com.infosys.retail.dao.PurchaseRepository;
+import com.infosys.retail.dto.CustomerDTO;
+import com.infosys.retail.dto.ItemDTO;
+import com.infosys.retail.dto.PurchaseDTO;
+import com.infosys.retail.dto.ResponseData;
+import com.infosys.retail.dto.entity.CustomerEntity;
+import com.infosys.retail.dto.entity.ItemEntity;
+import com.infosys.retail.dto.entity.PurchaseEntity;
+import com.infosys.retail.service.CacheService;
+import com.infosys.retail.service.RewardsService;
 
 @ExtendWith(MockitoExtension.class)
 public class RewardServiceTest {
@@ -125,7 +127,7 @@ public class RewardServiceTest {
 		when(repo.save(any(CustomerEntity.class))).thenReturn(entity);
 		ResponseData responseData =	rewardService.purchaseItem(dto);
 		
-		assertEquals("Transaction successful.! Earned Rewards: "+856,responseData.getMsg());
+		assertEquals("Transaction successful.! Earned Rewards: "+856.9,responseData.getMsg());
 		assertEquals(true, responseData.isStatus());
 		
 		when(repo.findByPhoneNumber("123-456")).thenReturn(null);
@@ -170,9 +172,9 @@ public class RewardServiceTest {
 		
 		ResponseData responseData =	rewardService.getBalance("123-456");
 		assertEquals("Purchase History",responseData.getMsg());		
-		Map<String,Integer> map = new HashMap<>();
-		map.put("June", 26);
-		map.put("Total", 100);
+		Map<String,Double> map = new HashMap<>();
+		map.put("Jul/2026", 26.0);
+		map.put("Total", 100.0);
 		assertEquals(map, responseData.getData());
 		
 		when(repo.findByPhoneNumber("123-456")).thenReturn(null);

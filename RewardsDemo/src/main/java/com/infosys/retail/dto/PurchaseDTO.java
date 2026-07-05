@@ -1,4 +1,4 @@
-package com.retail.demo.dto;
+package com.infosys.retail.dto;
 
 import java.util.Date;
 import java.util.List;
@@ -24,7 +24,7 @@ public class PurchaseDTO {
 	
 	private long customerId;
 	
-	private int points;
+	private double points;
 	
 	@NotBlank(message = "Phone Number cannot be empty")
 	@JsonInclude(JsonInclude.Include.NON_NULL)
@@ -70,11 +70,11 @@ public class PurchaseDTO {
 		this.customerId = customerId;
 	}
 
-	public int getPoints() {
+	public double getPoints() {
 		return points;
 	}
 
-	public void setPoints(int points) {
+	public void setPoints(double points) {
 		this.points = points;
 	}
 	

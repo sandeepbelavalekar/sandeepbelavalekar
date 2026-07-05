@@ -1,4 +1,4 @@
-package com.retail.demo.service;
+package com.infosys.retail.service;
 
 import java.util.List;
 
@@ -10,8 +10,8 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
-import com.retail.demo.dao.ItemRepository;
-import com.retail.demo.dto.entity.ItemEntity;
+import com.infosys.retail.dao.ItemRepository;
+import com.infosys.retail.dto.entity.ItemEntity;
 
 @Component
 public class CacheService implements CommandLineRunner{
