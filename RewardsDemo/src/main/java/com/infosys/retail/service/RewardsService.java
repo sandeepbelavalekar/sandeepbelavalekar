@@ -1,6 +1,7 @@
 package com.infosys.retail.service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.time.Month;
 import java.time.format.TextStyle;
@@ -89,37 +90,43 @@ public class RewardsService {
 		return responseData;
 	}
 
-	private ResponseData computeRewards(PurchaseDTO p, CustomerEntity custEntity) {
+	private ResponseData computeRewards(PurchaseDTO purchaseDTO, CustomerEntity custEntity) {
 		ResponseData responseData;
 		List<ItemEntity> l=  cacheService.getItems();
-		Map<Object, Double> map = l.stream().collect(Collectors.toMap(f->f.getName(), f->f.getPrice()));
-		//System.out.println(map);
-		p.getItemList().forEach(c-> {
+		Map<Object, Double> map = l.stream().collect(Collectors.toMap(f->f.getName(), f->f.getPrice()));		
+		purchaseDTO.getItemList().forEach(c-> {
 			if(map.keySet().contains(c.getName())) {
-				double price = map.get(c.getName());
-				//System.out.println(c.getName()+" "+price+" "+c.getQuantity());
-				double totalPrice = p.getTotalPrice() + (c.getQuantity() * price);
-				p.setTotalPrice(totalPrice);
+				double price = map.get(c.getName());				
+				double totalPrice = purchaseDTO.getTotalPrice() + (c.getQuantity() * price);
+				purchaseDTO.setTotalPrice(totalPrice);
 			}
 		});
 		PurchaseEntity purchaseEntity = new PurchaseEntity();
-		purchaseEntity.setCustomerId(p.getCustomerId());		
+		purchaseEntity.setCustomerId(purchaseDTO.getCustomerId());		
 		purchaseEntity.setPurchaseDate(new Date());
-		purchaseEntity.setTotalPrice(p.getTotalPrice());		
-		double points = 0;
-		if(p.getTotalPrice() > 100) {
-			points = new BigDecimal((p.getTotalPrice()-100) * 2).doubleValue();
-			points = points+50;			
-		}else if(p.getTotalPrice() <= 100 && p.getTotalPrice()> 50) {
-			points = 50;
+		purchaseEntity.setTotalPrice(purchaseDTO.getTotalPrice());		
+		BigDecimal points = BigDecimal.ZERO;
+		if(purchaseDTO.getTotalPrice() > 100) {
+			points = new BigDecimal((purchaseDTO.getTotalPrice()-100) * 2);
+			points = points.add(new BigDecimal(50));
+		}else if(purchaseDTO.getTotalPrice() <= 100 && purchaseDTO.getTotalPrice()> 50) {
+			points = new BigDecimal(50);
 		}
-		p.setPoints(points);
+		purchaseDTO.setPoints(points);
 		purchaseEntity.setPoints(points);
 		purchaseEntity.setCustomerId(custEntity.getId());
 		purchaseRepo.save(purchaseEntity);
-		custEntity.setPointsBalance(custEntity.getPointsBalance()+p.getPoints());
+		if(custEntity.getPointsBalance()!=null) {
+			custEntity.setPointsBalance(custEntity.getPointsBalance().add(purchaseDTO.getPoints()));
+		} else {
+			custEntity.setPointsBalance(purchaseDTO.getPoints());
+		}
 		repo.save(custEntity);
-		responseData = new ResponseData("Transaction successful.! Earned Rewards: "+custEntity.getPointsBalance());
+		if(custEntity.getPointsBalance()!=null) {
+		responseData = new ResponseData("Transaction successful.! Earned Rewards: "+custEntity.getPointsBalance().setScale(2, RoundingMode.UP));
+		} else {
+			responseData = new ResponseData("Transaction successful.! Earned Rewards: 0.0");
+		}
 		responseData.setStatus(true);
 		return responseData;
 	}
@@ -140,9 +147,11 @@ public class RewardsService {
 			BeanUtils.copyProperties(custEntity, cust);
 			cust.setPurchaseList(null);
 			List<PurchaseDTO> purchaseList = new ArrayList<>();
-			Map<String, Double> map = list.stream()
-					.collect(Collectors.toMap(f -> getMonth(f.getPurchaseDate()), v -> v.getPoints(), (x, y) -> x + y));
-			map.put("Total", custEntity.getPointsBalance());
+			Map<String, BigDecimal> map = list.stream()
+					.collect(Collectors.toMap(f -> getMonth(f.getPurchaseDate()), v -> v.getPoints().setScale(2, RoundingMode.UP), (x, y) -> x.add(y).setScale(2, RoundingMode.UP)));
+			if(custEntity.getPointsBalance()!=null) {
+				map.put("Total", custEntity.getPointsBalance().setScale(2,RoundingMode.UP));
+			}
 
 			cust.setPurchaseList(purchaseList);
 			ResponseData responseData = new ResponseData("Purchase History");

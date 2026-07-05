@@ -1,5 +1,6 @@
 package com.infosys.retail.dto.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import jakarta.persistence.Column;
@@ -28,7 +29,7 @@ public class PurchaseEntity {
 	private long customerId;
 	
 	@Column(name = "points")
-	private double points;
+	private BigDecimal points;
 
 	public int getId() {
 		return id;
@@ -62,11 +63,11 @@ public class PurchaseEntity {
 		this.customerId = customerId;
 	}
 
-	public double getPoints() {
+	public BigDecimal getPoints() {
 		return points;
 	}
 
-	public void setPoints(double points) {
+	public void setPoints(BigDecimal points) {
 		this.points = points;
 	}
 

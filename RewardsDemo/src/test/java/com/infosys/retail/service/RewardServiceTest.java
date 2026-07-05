@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -25,8 +27,6 @@ import com.infosys.retail.dto.ResponseData;
 import com.infosys.retail.dto.entity.CustomerEntity;
 import com.infosys.retail.dto.entity.ItemEntity;
 import com.infosys.retail.dto.entity.PurchaseEntity;
-import com.infosys.retail.service.CacheService;
-import com.infosys.retail.service.RewardsService;
 
 @ExtendWith(MockitoExtension.class)
 public class RewardServiceTest {
@@ -101,6 +101,7 @@ public class RewardServiceTest {
 		entity.setAddress("ABC");
 		entity.setEmail("sandeepbel@gmail.com");
 		entity.setId(1);
+		entity.setPointsBalance(BigDecimal.ZERO);
 		
 		List<ItemEntity> itemList = new ArrayList<>();
 		ItemEntity i1 = new ItemEntity();
@@ -127,7 +128,7 @@ public class RewardServiceTest {
 		when(repo.save(any(CustomerEntity.class))).thenReturn(entity);
 		ResponseData responseData =	rewardService.purchaseItem(dto);
 		
-		assertEquals("Transaction successful.! Earned Rewards: "+856.9,responseData.getMsg());
+		assertEquals("Transaction successful.! Earned Rewards: 856.90",responseData.getMsg());
 		assertEquals(true, responseData.isStatus());
 		
 		when(repo.findByPhoneNumber("123-456")).thenReturn(null);
@@ -148,19 +149,19 @@ public class RewardServiceTest {
 		entity.setAddress("ABC");
 		entity.setEmail("sandeepbel@gmail.com");
 		entity.setId(1);
-		entity.setPointsBalance(100);
+		entity.setPointsBalance(new BigDecimal(100));
 		
 		PurchaseEntity p1=new PurchaseEntity();
 		p1.setCustomerId(1);
 		p1.setId(1);
-		p1.setPoints(12);
+		p1.setPoints(new BigDecimal(12));
 		p1.setTotalPrice(100.50);
 		p1.setPurchaseDate(new Date());
 		
 		PurchaseEntity p2=new PurchaseEntity();
 		p2.setCustomerId(1);
 		p2.setId(2);
-		p2.setPoints(14);
+		p2.setPoints(new BigDecimal(14));
 		p2.setTotalPrice(200.50);
 		p2.setPurchaseDate(new Date());
 		
@@ -172,9 +173,9 @@ public class RewardServiceTest {
 		
 		ResponseData responseData =	rewardService.getBalance("123-456");
 		assertEquals("Purchase History",responseData.getMsg());		
-		Map<String,Double> map = new HashMap<>();
-		map.put("Jul/2026", 26.0);
-		map.put("Total", 100.0);
+		Map<String,BigDecimal> map = new HashMap<>();
+		map.put("Jul/2026", new BigDecimal(26.00).setScale(2,RoundingMode.UP));
+		map.put("Total", new BigDecimal(100.00).setScale(2,RoundingMode.UP));
 		assertEquals(map, responseData.getData());
 		
 		when(repo.findByPhoneNumber("123-456")).thenReturn(null);

@@ -1,5 +1,6 @@
 package com.infosys.retail.dto;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class PurchaseDTO {
 	
 	private long customerId;
 	
-	private double points;
+	private BigDecimal points;
 	
 	@NotBlank(message = "Phone Number cannot be empty")
 	@JsonInclude(JsonInclude.Include.NON_NULL)
@@ -70,11 +71,11 @@ public class PurchaseDTO {
 		this.customerId = customerId;
 	}
 
-	public double getPoints() {
+	public BigDecimal getPoints() {
 		return points;
 	}
 
-	public void setPoints(double points) {
+	public void setPoints(BigDecimal points) {
 		this.points = points;
 	}
 	

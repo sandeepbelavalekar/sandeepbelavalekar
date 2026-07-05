@@ -1,5 +1,6 @@
 package com.infosys.retail.dto.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class CustomerEntity {
 	private String phoneNumber;
     
     @Column(name = "points_balance")
-	private double pointsBalance;
+	private BigDecimal pointsBalance;
     
     @Column(name = "email")
     private String email;
@@ -69,11 +70,11 @@ public class CustomerEntity {
 		this.phoneNumber = phoneNumber;
 	}
 
-	public double getPointsBalance() {
+	public BigDecimal getPointsBalance() {
 		return pointsBalance;
 	}
 
-	public void setPointsBalance(double pointsBalance) {
+	public void setPointsBalance(BigDecimal pointsBalance) {
 		this.pointsBalance = pointsBalance;
 	}
 	
