@@ -79,7 +79,7 @@ public class RewardsService {
 			responseData = computeRewards(purchase, custEntity);
 			return responseData;
 		} else {
-			responseData = new ResponseData("Phone Number not found " + purchase.getPoints());
+			responseData = new ResponseData("Phone Number not found");
 			responseData.setStatus(false);
 		}
 		return responseData;
@@ -89,11 +89,11 @@ public class RewardsService {
 		ResponseData responseData;
 		List<ItemEntity> l=  cacheService.getItems();
 		Map<Object, Double> map = l.stream().collect(Collectors.toMap(f->f.getName(), f->f.getPrice()));
-		System.out.println(map);
+		//System.out.println(map);
 		p.getItemList().forEach(c-> {
 			if(map.keySet().contains(c.getName())) {
 				double price = map.get(c.getName());
-				System.out.println(c.getName()+" "+price+" "+c.getQuantity());
+				//System.out.println(c.getName()+" "+price+" "+c.getQuantity());
 				double totalPrice = p.getTotalPrice() + (c.getQuantity() * price);
 				p.setTotalPrice(totalPrice);
 			}
@@ -129,19 +129,25 @@ public class RewardsService {
 		
 		CustomerEntity custEntity =	repo.findByPhoneNumber(phoneNumber);
 		
-		List<PurchaseEntity> list = custEntity.getPurchaseList();
-		
-		CustomerDTO cust = new CustomerDTO();
-		BeanUtils.copyProperties(custEntity, cust);
-		cust.setPurchaseList(null);
-		List<PurchaseDTO> purchaseList = new ArrayList<>();
-		Map<String, Integer> map = list.stream().collect(Collectors.toMap(f-> getMonth(f.getPurchaseDate()), v->v.getPoints(), (x,y)-> x+y));
-		map.put("Total", custEntity.getPointsBalance());
-		
-		cust.setPurchaseList(purchaseList);
-		ResponseData responseData = new ResponseData("Purchase History");
-		responseData.setData(map);
-		return responseData;
+		if (custEntity != null) {
+			List<PurchaseEntity> list = custEntity.getPurchaseList();
+
+			CustomerDTO cust = new CustomerDTO();
+			BeanUtils.copyProperties(custEntity, cust);
+			cust.setPurchaseList(null);
+			List<PurchaseDTO> purchaseList = new ArrayList<>();
+			Map<String, Integer> map = list.stream()
+					.collect(Collectors.toMap(f -> getMonth(f.getPurchaseDate()), v -> v.getPoints(), (x, y) -> x + y));
+			map.put("Total", custEntity.getPointsBalance());
+
+			cust.setPurchaseList(purchaseList);
+			ResponseData responseData = new ResponseData("Purchase History");
+			responseData.setData(map);
+			return responseData;
+		} else {
+			ResponseData responseData = new ResponseData("Phone number not found");
+			return responseData;
+		}
 	}
 
 	private String getMonth(Date purchaseDate) {
