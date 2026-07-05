@@ -42,14 +42,14 @@ public class RewardsController {
 	}
 
 	@PostMapping("/purchaseItems")
-	public ResponseEntity<String> purchaseItems(@Valid @RequestBody PurchaseDTO p) {
+	public ResponseEntity<ResponseData> purchaseItems(@Valid @RequestBody PurchaseDTO p) {
 		ResponseData responseData = service.purchaseItem(p);
-		ResponseEntity<String> responseEntity = null;
+		ResponseEntity<ResponseData> responseEntity = null;
 
 		if (responseData.isStatus()) {
-			responseEntity = new ResponseEntity<String>(responseData.getMsg(), HttpStatus.OK);
+			responseEntity = new ResponseEntity<>(responseData, HttpStatus.OK);
 		} else {
-			responseEntity = new ResponseEntity<String>(responseData.getMsg(), HttpStatus.EXPECTATION_FAILED);
+			responseEntity = new ResponseEntity<>(responseData, HttpStatus.EXPECTATION_FAILED);
 		}
 		return responseEntity;
 	}

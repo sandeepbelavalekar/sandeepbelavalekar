@@ -1,6 +1,8 @@
 package com.infosys.retail.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 public class ResponseData {
 	
@@ -9,6 +11,7 @@ public class ResponseData {
 	@JsonIgnore
 	private boolean status;
 	
+	@JsonInclude(value = Include.NON_NULL)
 	private Object data;
 	
 	public boolean isStatus() {

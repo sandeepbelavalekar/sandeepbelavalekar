@@ -80,6 +80,7 @@ public class RewardsService {
 		CustomerEntity custEntity = repo.findByPhoneNumber(purchase.getPhoneNumber());
 		if (custEntity != null) {
 			responseData = computeRewards(purchase, custEntity);
+			responseData.setStatus(true);
 			return responseData;
 		} else {
 			responseData = new ResponseData("Phone Number not found");
